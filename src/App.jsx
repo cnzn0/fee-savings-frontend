@@ -303,7 +303,7 @@ export default function App() {
       </main>
 
       <div className="fade-bottom" />
-      <Agentation />
+      {import.meta.env.DEV && <Agentation />}
     </>
   );
 }
