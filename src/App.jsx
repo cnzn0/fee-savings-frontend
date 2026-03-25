@@ -192,7 +192,8 @@ export default function App() {
     setResult(null);
 
     try {
-      const res = await fetch("/v1/hyperliquid/savings-estimate", {
+      const apiBase = import.meta.env.DEV ? "" : "https://fee-savings-service.vercel.app";
+      const res = await fetch(`${apiBase}/v1/hyperliquid/savings-estimate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ address: address.trim(), window: win }),
