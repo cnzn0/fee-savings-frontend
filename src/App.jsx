@@ -183,6 +183,27 @@ export default function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Static demo data for prototype
+  const DEMO_DATA = {
+    address: "0xe117d3d94b30F7e7aA4f29704d0d2f43C009b9A8",
+    window: "all",
+    estimated_hl_fees_paid: 77088.20,
+    estimated_savings: 77088.20,
+    fee_assumption: "Lighter Standard Accounts: 0 maker / 0 taker",
+    estimation_mode: "portfolio_volume_with_recent_fill_maker_taker_mix",
+    current_rates: { perp_taker_rate: 0.00034, perp_maker_rate: 0.000102, spot_taker_rate: 0.00051, spot_maker_rate: 0.000255 },
+    recent_cross_volume: 13960045.11,
+    recent_add_volume: 27030648.05,
+    recent_blended_perp_rate: 0.00018305475852153203,
+    requested_perp_volume: 421120984.13,
+    requested_total_volume: 431132030.89,
+    portfolio_windows: { day: 1943869.32, week: 13967526.59, month: 49316868.71, all_time: 431132030.89 },
+    fill_requests_used: 3,
+    fill_count: 6000,
+    fully_covered: false,
+    coverage_note: "Computed from Hyperliquid portfolio perp volume and a blended current perp rate derived from 6000 recent fills across 3 fill request(s).",
+  };
+
   async function handleSubmit(e) {
     if (e) e.preventDefault();
     if (!address.trim()) return;
@@ -191,25 +212,10 @@ export default function App() {
     setError("");
     setResult(null);
 
-    try {
-      const apiBase = import.meta.env.DEV ? "" : "https://fee-savings-service.vercel.app";
-      const res = await fetch(`${apiBase}/v1/hyperliquid/savings-estimate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ address: address.trim(), window: win }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(
-          typeof data?.detail === "string" ? data.detail : "Request failed"
-        );
-      }
-      setResult(data);
-    } catch (err) {
-      setError(err.message || "Request failed");
-    } finally {
-      setLoading(false);
-    }
+    // Simulate brief loading then show demo data
+    await new Promise((r) => setTimeout(r, 400));
+    setResult({ ...DEMO_DATA, address: address.trim(), window: win });
+    setLoading(false);
   }
 
   return (
